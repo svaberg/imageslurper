@@ -3,11 +3,11 @@ Are you **tired** of asking people for the data behind their published false col
 
 The image slurper can be used on many types of false color plots, and works best on relatively smooth data.
 
-The image slurper is a [Jupyter worksheet](imageslurper.ipynb) that takes an image like this one
+The image slurper is a [Jupyter notebook](imageslurper.ipynb) that takes an image like this one
 
 ![Source image](img/world-temp.jpg)
 
-and reconstructs the original pixel values by comparing each pixel to the colors of the colorbar, giving a `numpy` array
+and infers the original pixel values by comparing each pixel to the colors of the colorbar, giving a `numpy` array
 ```python
 array([[232.39477504, 234.42670537, 234.86211901, ..., 234.86211901,
         234.42670537, 233.84615385],
@@ -15,9 +15,15 @@ array([[232.39477504, 234.42670537, 234.86211901, ..., 234.86211901,
        [206.85050798, 207.28592163, 207.57619739, ..., 208.30188679,
         207.28592163, 209.17271408]])
 ```
-which can be plotted with `matplotlib` using the same colorbar as the image, giving a result like below.
+which can be plotted with `matplotlib`:
+![Source image](img/world-temp.jpg-reconstructed-viridis.png)
+and its associated error (often associated with steep gradients):
+![Source image](img/world-temp.jpg-reconstructed-error.png)
 
-![Result image](world-temp.jpg.reconstructed.jpg)
+
+## Comparison with original
+The reconstructed image can be plotted using the same colorbar as the original image:
+![Result image](img/world-temp.jpg-reconstructed-original_colormap.png)
 
 For a well executed slurp the input image plot areas should be visually indistinguishable from the result plot area.
 

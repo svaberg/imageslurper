@@ -35,9 +35,9 @@ def crop(image, thresh=200):
 
 
 def make_header(file, size):
-	now = datetime.datetime.now()
-	string = ""
-	string += "Created on %s from file \"%s\" \n" % (now, file)
-	string += "using https://github.com/svaberg/imageslurper version %s\n" % __version__
-	string += "Image dimensions " + str(size)
-	return string
+    now = datetime.datetime.now()
+    string = ""
+    string += "Created on %s from file \"%s\" \n" % (now, file)
+    string += "using https://github.com/svaberg/imageslurper version %s\n" % __version__
+    string += "Image dimensions " + str(size)
+    return string
