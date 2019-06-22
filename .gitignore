@@ -1,3 +1,4 @@
 # Ignore output files
 *-slurped.csv
 *-slurped.p
+.ipynb_checkpoints/*
