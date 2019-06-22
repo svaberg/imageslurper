@@ -9,7 +9,10 @@ The image slurper is a [Jupyter notebook](imageslurper.ipynb) that takes a a fal
 
 Use the mouse to indicate the image area and colorbar area:
 
-![Usage animation](demo/demo.gif)
+<p align="center">
+  <img src="demo/demo.gif" alt="Image slurper demo"/>
+</p>
+
 
 and let the image slurper infer the original pixel values by comparing each pixel to the colors of the colorbar, 
 giving a `numpy` array
