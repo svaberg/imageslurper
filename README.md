@@ -17,9 +17,9 @@ array([[232.39477504, 234.42670537, 234.86211901, ..., 234.86211901,
 ```
 which can be plotted with `matplotlib`:
 ![Source image](img/world-temp.jpg-reconstructed-viridis.png)
-and its associated error (often associated with steep gradients):
-![Source image](img/world-temp.jpg-reconstructed-error.png)
 
+along with its associated error (often associated with steep gradients):
+![Source image](img/world-temp.jpg-reconstructed-error.png)
 
 ## Comparison with original
 The reconstructed image can be plotted using the same colorbar as the original image:
