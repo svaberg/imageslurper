@@ -167,6 +167,8 @@ def save_pickle(file, unmapped_filled_image, colorbar_data):
     with open(save_file, 'rb') as load_handle:
         unmapped_filled_image, colorbar_data = pickle.load(load_handle)
 
+    return save_file
+
 
 def text_updater(file, update_freq=1):
     img = yield
