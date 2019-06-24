@@ -50,8 +50,8 @@ def select_rectangles(image):
 
 
 def print_picker_result():
-    print("User picked map corners " + str(get_map_corners()) +
-          "\nand colorbar corners " + str(get_bar_corners()) +
+    print("User picked map corners: " + get_map_corners().__repr__() +
+          "\nand colorbar corners: " + get_bar_corners().__repr__() +
           "\nin %d actions." % _user_box_count)
 
 def get_map_corners():
