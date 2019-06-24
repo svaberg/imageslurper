@@ -29,12 +29,11 @@ def line_select_callback(eclick, erelease):
     print(_user_box_count)
 
 
-def select_rectangles(file="img/world-temp.jpg"):
+def select_rectangles(image):
     global _rectangle_selector
-    full_image = PIL.Image.open(file)
 
     fig, current_ax = plt.subplots(figsize=(10, 4))
-    current_ax.imshow(full_image)
+    current_ax.imshow(image)
     current_ax.axis('off')
 
     current_ax.add_patch(_boxes[0])
@@ -51,13 +50,13 @@ def select_rectangles(file="img/world-temp.jpg"):
 
 
 def print_picker_result():
-    print("User picked map corners " + str(map_corners()) +
-          " and colorbar corners " + str(bar_corners()) +
-          " in %d actions." % _user_box_count)
+    print("User picked map corners " + str(get_map_corners()) +
+          "\nand colorbar corners " + str(get_bar_corners()) +
+          "\nin %d actions." % _user_box_count)
 
-def map_corners():
+def get_map_corners():
     return _boxes[0].get_bbox().extents
 
 
-def bar_corners():
+def get_bar_corners():
     return _boxes[1].get_bbox().extents
