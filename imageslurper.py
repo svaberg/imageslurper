@@ -73,6 +73,16 @@ def auto_resize(image, max_pixels=1e99, resample=PIL.Image.NEAREST):
 
 
 def auto_scale(nearest_indices, residual_norm, colorbar_data, xlim, ylim, clim):
+    """
+    Scale the image given by unmap_nearest to the original image's colorbar units and axis units.
+    :param nearest_indices: image produced by unmap_image
+    :param residual_norm: residuals produced by unmap_image
+    :param colorbar_data: pixel image of the colorbar
+    :param xlim: original image x-axis limits
+    :param ylim: original image y-axis limits
+    :param clim: original image colorbar limits.
+    :return: vector of x positions, vector of y positions, scaled image and error estimate.
+    """
     colorbar_length_pixels = colorbar_data.shape[0] - 1
 
     vmin, vmax = clim[0], clim[1]
@@ -87,26 +97,44 @@ def auto_scale(nearest_indices, residual_norm, colorbar_data, xlim, ylim, clim):
     return x, y, scaled_image, scaled_error
 
 
-def auto_hole_fill(data, error, thresh, di=5):
-    data_padded = np.empty([i + 2 * di for i in data.shape])
+def auto_hole_fill(data, error, threshold, radius=5):
+    """
+    A basic hole filling algorithm. Pixels whose error is larger than the error threshold
+    are replaced by the median of their neighbours.
+    :param data: image data
+    :param error: error data
+    :param threshold: error threshold
+    :param radius: 
+    :return: 
+    """"))
+
+    data_padded = np.empty([i + 2 * radius for i in data.shape])
     data_padded.fill(np.nan)
 
-    data_padded[di:-di, di:-di] = data
-    data_padded[di:-di, di:-di][error > thresh] = np.nan
+    data_padded[radius:-radius, radius:-radius] = data
+    data_padded[radius:-radius, radius:-radius][error > threshold] = np.nan
 
     result = data
-    ids = np.where(error > thresh)
+    ids = np.where(error > threshold)
     ids = np.array(ids)
     for x_id, y_id in ids.T:
-        x_id += di
-        y_id += di
+        x_id += radius
+        y_id += radius
 
-        result[x_id - di, y_id - di] = np.nanmedian(data_padded[x_id - di:x_id + di, y_id - di:y_id + di])
+        result[x_id - radius, y_id - radius] = \
+            np.nanmedian(data_padded[x_id - radius:x_id + radius, y_id - radius:y_id + radius])
 
     return result
 
 
 def make_header(file, size):
+    """
+    Make a header for csv output.
+    :param file: Original input file name.
+    :param size: Image dimensions.
+    :return: header as string.
+    """"
+
     now = datetime.datetime.now()
     string = ""
     string += "Created on %s from file \"%s\" \n" % (now, file)
@@ -117,16 +145,45 @@ def make_header(file, size):
 
 # See https://stackoverflow.com/questions/43843381/digitize-a-colormap
 def unmap_nearest(image, colorbar, norm_order):
-    """ image is an image of shape [n, m, 3], and colorbar is a colormap of shape [k, 3]. """
+    """
+    For each pixel in the image, find the index of the pixel in the colormap whose color value is closest
+    in the provided norm.
 
-    rgb_distances = np.linalg.norm(np.abs(image[np.newaxis, ...] - colorbar[:, np.newaxis, :]), ord=norm_order, axis=-1)
+    The image should by a numpy array of shape (..., c) and the colorbar is a numpy array of shape (k, c).
+    The last dimension is assumed to be color (i.e. RGB) dimension
+    The algorithm uses brute force to find the closest color of each input pixel.
+
+    :param image: plot area image of shape (..., c)
+    :param colorbar: colorbar color values of shape (k, c)
+    :param norm_order: order of vector norm used to calculate color distance.
+    :return: array of colorbar pixel indices of shape (...) with values in [0, k-1]
+    """
+
+    # Fully expanded distance array of shape (k, ..., 3).
+    rgb_distances = np.linalg.norm(np.abs(image[np.newaxis, ...] - colorbar[:, np.newaxis, :]),
+                                   ord=norm_order,
+                                   axis=-1)
+
+    # Minimum taken over k (axis 0).
     min_index = np.argmin(rgb_distances, axis=0)
 
-    return min_index  # , rgb_closest
-    # return min_index / (colorbar.shape[0] - 1), min_rgb_distance / (255 * 3)
+    return min_index
 
 
-def buffered_unmap(image, colorbar, pixels=1000, updater=None, norm_order=1):
+def buffered_unmap(image, colorbar, chunk_size=1000, updater=None, norm_order=1):
+    """
+    Buffering wrapper for unmap_nearest.
+
+    For larger images unmap_nearest may run out of memory. The buffered wrapper flattens the input
+    array over all axes but the color axis and processes the flattened image in chunks.
+
+    :param image: plot area image of shape (..., c)
+    :param colorbar: colorbar color values of shape (k, c)
+    :param chunk_size: buffer size in pixels
+    :param updater: coroutine that can be used for progress monitoring
+    :param norm_order: order of vector norm used to calculate color distance.
+    :return:
+    """
     if updater is not None:
         next(updater)
 
@@ -139,14 +196,14 @@ def buffered_unmap(image, colorbar, pixels=1000, updater=None, norm_order=1):
 
     pixel_id = 0
     while pixel_id <= unmapped_image.size:
-        _slice = np.s_[pixel_id:pixel_id + pixels]
+        _slice = np.s_[pixel_id:pixel_id + chunk_size]
 
         rec_flat[_slice] = unmap_nearest(img_flat[_slice], colorbar, norm_order)
 
         if updater:
             updater.send(unmapped_image)
 
-        pixel_id += pixels
+        pixel_id += chunk_size
 
     if updater:
         updater.send(unmapped_image)
@@ -156,6 +213,14 @@ def buffered_unmap(image, colorbar, pixels=1000, updater=None, norm_order=1):
 
 
 def save_pickle(file, unmapped_filled_image, colorbar_data):
+    """
+    Helper function to save the unmapped image as a Python picke file.
+    Saves the image data and the colorbar data.
+    :param file: input file name
+    :param unmapped_filled_image: image data
+    :param colorbar_data: colorbar data
+    :return: name of pickle file
+    """
     save_file = basename(file) + "-slurped.p"
 
     with open(save_file, 'wb') as save_handle:
@@ -171,6 +236,12 @@ def save_pickle(file, unmapped_filled_image, colorbar_data):
 
 
 def text_updater(file, update_freq=1):
+    """
+    Coroutine that prints the completion percentage of buffered_unmap
+    :param file: input file name
+    :param update_freq: update frequency in seconds.
+    :return:
+    """
     img = yield
 
     last_update = time.time()
@@ -186,6 +257,13 @@ def text_updater(file, update_freq=1):
 
 
 def plot_input(image_data, colorbar_image_data, axs):
+    """
+    Create a plot of the input image and the colorbar image data.
+    :param image_data: image data
+    :param colorbar_image_data: colorbar image data
+    :param axs: plot axes
+    :return:
+    """
     ax = axs[0]
     ax.imshow(image_data)
     ax.set_title("Image array shape " + str(image_data.shape))
@@ -221,6 +299,19 @@ def autoslurp(file,
               norm_order=2,
               updater=None,
               ):
+    """
+    Convenience function that goes through the full process.
+    :param file: image input file
+    :param map_corners: pixel corners of the plot area
+    :param colorbar_corners: pixel corners of the colorbar area
+    :param error_threshold: error threshold for hole filling
+    :param xlim: plot x axis limits
+    :param ylim: plot y axis limits
+    :param clim: plot colorbar limits
+    :param norm_order: order of vector norm used to calculate color distance.
+    :param updater: Coroutine that prints the completion percentage of buffered_unmap
+    :return:
+    """
     if updater is None:
         updater = text_updater(file)
 
@@ -290,7 +381,7 @@ def autoslurp(file,
     # Error analysis
     #
     fig, ax = plt.subplots()
-    residual_histogram(ax, norm_order, residual_norm, residual_rgb)
+    plot_residual_histogram(ax, norm_order, residual_norm, residual_rgb)
     plt.show()
 
     #
@@ -319,7 +410,15 @@ def autoslurp(file,
     return locals()
 
 
-def residual_histogram(ax, norm_order, residual_norm, residual_rgb):
+def plot_residual_histogram(ax, norm_order, residual_norm, residual_rgb):
+    """
+    Plot a histogram of the unmapping residuals.
+    :param ax: plot axis
+    :param norm_order: order of vector norm used to calculate color distance.
+    :param residual_norm: residual norm
+    :param residual_rgb: residual rgb values
+    :return:
+    """
     hatch = ['|||', '///', '---']
     np.min(residual_norm)
     bins = np.logspace(np.log10(np.min(residual_norm[np.where(residual_norm > 0)])),
