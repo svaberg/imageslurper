@@ -1,4 +1,5 @@
 ![The image slurper](img/imageslurper.small.png)
+
 Are you **tired** of asking people for the data behind their published false color plots? Use the image slurper to find the underlying matrix of values from a false-color (heat map) image and its colorbar! 
 
 The image slurper can be used on many types of false color plots, and works best on relatively smooth data.
