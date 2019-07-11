@@ -106,7 +106,7 @@ def auto_hole_fill(data, error, threshold, radius=5):
     :param threshold: error threshold
     :param radius: 
     :return: 
-    """"))
+    """
 
     data_padded = np.empty([i + 2 * radius for i in data.shape])
     data_padded.fill(np.nan)
@@ -133,7 +133,7 @@ def make_header(file, size):
     :param file: Original input file name.
     :param size: Image dimensions.
     :return: header as string.
-    """"
+    """
 
     now = datetime.datetime.now()
     string = ""
