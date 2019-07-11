@@ -1,11 +1,11 @@
-# The image slurper
+![The image slurper](img/imageslurper.small.png)
 Are you **tired** of asking people for the data behind their published false color plots? Use the image slurper to find the underlying matrix of values from a false-color (heat map) image and its colorbar! 
 
 The image slurper can be used on many types of false color plots, and works best on relatively smooth data.
 
 The image slurper is a [Jupyter notebook](imageslurper.ipynb) that takes a a false-color image like this one:
 
-![Source image](img/world-temp.jpg)
+![original false color image](img/world-temp.jpg)
 
 Use the mouse to indicate the image area and colorbar area:
 
@@ -24,12 +24,12 @@ array([[232.39477504, 234.42670537, 234.86211901, ..., 234.86211901,
         207.28592163, 209.17271408]])
 ```
 and an associated error estimate, which cmay be plotted with `matplotlib`:
-![Source image](img/world-temp.jpg-reconstructed-viridis.png)
-![Source image](img/world-temp.jpg-reconstructed-error.png)
+![inferred values](img/world-temp.jpg-reconstructed-viridis.png)
+![inferred errors](img/world-temp.jpg-reconstructed-error.png)
 
 ## Comparison with original
 The reconstructed image can be plotted using the same colorbar as the original image:
-![Result image](img/world-temp.jpg-reconstructed-original_colormap.png)
+![reconstructed image in original color scale](img/world-temp.jpg-reconstructed-original_colormap.png)
 
 For a well executed slurp the input image plot areas should be visually indistinguishable from the result plot area.
 
