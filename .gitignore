@@ -2,3 +2,5 @@
 *-slurped.csv
 *-slurped.p
 .ipynb_checkpoints/*
+.idea
+.DS_Store
