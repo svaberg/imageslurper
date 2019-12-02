@@ -1,0 +1,6 @@
+name: imageslurper
+dependencies:
+  - numpy 
+  - matplotlib 
+  - pillow 
+  - jupyter
