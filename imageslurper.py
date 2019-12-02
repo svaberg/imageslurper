@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import ListedColormap
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 
 def auto_crop(image, threshold=200, show_steps=False):
