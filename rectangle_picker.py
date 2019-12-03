@@ -4,8 +4,10 @@ from matplotlib.widgets import RectangleSelector
 
 import PIL.Image
 
-_boxes = [Rectangle((1, 1), 0, 0, facecolor='green', edgecolor='green', alpha=0.4),
-          Rectangle((1, 1), 0, 0, facecolor='blue', edgecolor='blue', alpha=0.4)]
+# The default rectangles and positions here are chosen to match the default 
+# slurp target used in imageslurper.ipynb.
+_boxes = [Rectangle((50, 50), 950, 500, facecolor='green', edgecolor='green', alpha=0.4),
+          Rectangle((150, 560), 750, 16, facecolor='blue', edgecolor='blue', alpha=0.4)]
 
 _user_box_count = 0
 
