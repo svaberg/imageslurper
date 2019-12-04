@@ -29,6 +29,6 @@ def test_auto_resize(max_pixels):
     Test of auto resize as it is not part of the usual slurp.
     """
     imageslurper.auto_resize(
-        PIL.Image.open("img/world-temp.jpg"), 
-        max_pixels=max_pixels, 
+        PIL.Image.open("img/world-temp.jpg"),
+        max_pixels=max_pixels,
         resample=PIL.Image.NEAREST)

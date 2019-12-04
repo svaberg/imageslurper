@@ -9,7 +9,7 @@ def plot_updater(ax=None, cmap=('viridis', 'magma'), update_freq=1):
     img = yield
 
     if ax is None:
-        fig, ax = plt.subplots(figsize=(14, 6))
+        _, ax = plt.subplots(figsize=(14, 6))
 
     img_img = ax.imshow(img, cmap=cmap[0])
     ax.set_xlabel('Pixels')

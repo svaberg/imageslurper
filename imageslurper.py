@@ -104,8 +104,8 @@ def auto_hole_fill(data, error, threshold, radius=5):
     :param data: image data
     :param error: error data
     :param threshold: error threshold
-    :param radius: 
-    :return: 
+    :param radius: radius in which to take median
+    :return: filled image
     """
 
     data_padded = np.empty([i + 2 * radius for i in data.shape])
