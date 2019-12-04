@@ -5,3 +5,6 @@ dependencies:
   - pillow 
   - jupyter
   - nbval
+  - pytest-cov
+  - codacy-coverage
+  
