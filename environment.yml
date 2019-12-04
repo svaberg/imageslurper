@@ -5,3 +5,5 @@ dependencies:
   - pillow 
   - jupyter
   - nbval
+  - pytest-cov
+  
