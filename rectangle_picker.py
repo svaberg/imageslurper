@@ -2,9 +2,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from matplotlib.widgets import RectangleSelector
 
-import PIL.Image
-
-# The default rectangles and positions here are chosen to match the default 
+# The default rectangles and positions here are chosen to match the default
 # slurp target used in imageslurper.ipynb.
 _boxes = [Rectangle((50, 50), 950, 500, facecolor='green', edgecolor='green', alpha=0.4),
           Rectangle((150, 560), 750, 16, facecolor='blue', edgecolor='blue', alpha=0.4)]
@@ -16,7 +14,7 @@ _rectangle_selector = None
 
 def line_select_callback(eclick, erelease):
     global _user_box_count
-    'eclick and erelease are the press and release events'
+    # eclick and erelease are the press and release events
     x1, y1 = eclick.xdata, eclick.ydata
     x2, y2 = erelease.xdata, erelease.ydata
 
@@ -34,7 +32,7 @@ def line_select_callback(eclick, erelease):
 def select_rectangles(image):
     global _rectangle_selector
 
-    fig, current_ax = plt.subplots(figsize=(10, 4))
+    _, current_ax = plt.subplots(figsize=(10, 4))
     current_ax.imshow(image)
     current_ax.axis('off')
 
