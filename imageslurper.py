@@ -1,6 +1,9 @@
 import datetime
 import pickle
 import time
+import logging
+log = logging.getLogger(__name__)
+
 from os.path import basename
 
 import IPython.display
@@ -88,8 +91,12 @@ def auto_scale(nearest_indices, residual_norm, colorbar_data, xlim, ylim, clim):
     vmin, vmax = clim[0], clim[1]
     scaled_image = nearest_indices / colorbar_length_pixels * (vmax - vmin) + vmin
     scaled_error = residual_norm / colorbar_length_pixels * (vmax - vmin)
-    assert not np.any(np.isnan(scaled_image)), "No NaN values expected in reconstructed image."
-    assert not np.any(np.isnan(scaled_error)), "No NaN values expected in reconstructed image error."
+
+    if np.any(np.isnan(scaled_image)):
+        log.warning("Found NaN values in reconstructed image.")
+    
+    if np.any(np.isnan(scaled_error)):
+        log.warning("Found NaN values in reconstructed image error.")
 
     x = np.linspace(xlim[0], xlim[1], scaled_image.shape[1])
     y = np.linspace(ylim[0], ylim[1], scaled_image.shape[0])
@@ -325,11 +332,12 @@ def autoslurp(file,
     colorbar_image = auto_rotate(colorbar_image)
 
     image_data = np.asarray(map_image)
-
-    assert not np.any(np.isnan(image_data)), "No NaN values expected in plot area rgb image."
+    if np.any(np.isnan(image_data)):
+        log.warning("Found NaN values in plot area rgb image.")
 
     colorbar_image_data = np.asarray(colorbar_image)
-    assert not np.any(np.isnan(colorbar_image_data)), "No NaN values expected in colorbar rgb image"
+    if np.any(np.isnan(colorbar_image_data)):
+        log.warning("Found NaN values in colorbar rgb image")
 
     colorbar_data = np.median(colorbar_image_data, axis=0)  # One pixel wide
 
@@ -338,7 +346,9 @@ def autoslurp(file,
     plt.show()
 
     nearest_indices = buffered_unmap(image_data, colorbar_data, updater=updater, norm_order=1)
-    assert (nearest_indices.shape[:2] == image_data.shape[:2])
+    if not nearest_indices.shape[:2] == image_data.shape[:2]:
+        log.error("Image shapes did not match up (this is likely fatal).")
+
 
     mapped_colors = colorbar_data[nearest_indices]
 

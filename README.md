@@ -1,8 +1,9 @@
 # ![The image slurper](img/imageslurper.small.png)
-
+[![Build Status](https://travis-ci.com/svaberg/imageslurper.svg?branch=master)](https://travis-ci.com/svaberg/imageslurper)
+[![Codacy Coverage](https://api.codacy.com/project/badge/Coverage/35f5ec8befa64a48b299c8871e004f1e)](https://www.codacy.com/manual/svaberg/imageslurper?utm_source=github.com&utm_medium=referral&utm_content=svaberg/imageslurper&utm_campaign=Badge_Coverage)
+[![Codacy Grade](https://api.codacy.com/project/badge/Grade/35f5ec8befa64a48b299c8871e004f1e)](https://www.codacy.com/manual/svaberg/imageslurper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=svaberg/imageslurper&amp;utm_campaign=Badge_Grade)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/svaberg/imageslurper)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.com/svaberg/imageslurper.svg?branch=master)](https://travis-ci.com/svaberg/imageslurper)
 
 Are you **tired** of asking people for the data behind their published false color plots? Use the image slurper to find the underlying matrix of values from a false-color (heat map) image and its colorbar!
 
