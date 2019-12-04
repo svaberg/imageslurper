@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import ListedColormap
 
-__version__ = "1.1.0"
+__version__ = "1.1.2"
 
 
 def auto_crop(image, threshold=200, show_steps=False):
@@ -94,7 +94,7 @@ def auto_scale(nearest_indices, residual_norm, colorbar_data, xlim, ylim, clim):
 
     if np.any(np.isnan(scaled_image)):
         log.warning("Found NaN values in reconstructed image.")
-    
+
     if np.any(np.isnan(scaled_error)):
         log.warning("Found NaN values in reconstructed image error.")
 
