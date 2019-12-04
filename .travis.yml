@@ -24,4 +24,5 @@ install:
   - source activate test-environment
 
 script:
-  - py.test --nbval
+  - py.test --nbval-lax -v --cov . --cov-report xml
+  - python-codacy-coverage -r coverage.xml
