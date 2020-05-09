@@ -1,4 +1,7 @@
 name: imageslurper
+channels:
+  - conda-forge
+  - defaults
 dependencies:
   - numpy 
   - matplotlib 
