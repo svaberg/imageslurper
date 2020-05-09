@@ -1,4 +1,4 @@
-# ![The image slurper](img/imageslurper.small.png)
+# ![The image slurper](img/overturned-cup-logo.png)
 [![Build Status](https://travis-ci.com/svaberg/imageslurper.svg?branch=master)](https://travis-ci.com/svaberg/imageslurper)
 [![Codacy Coverage](https://api.codacy.com/project/badge/Coverage/35f5ec8befa64a48b299c8871e004f1e)](https://www.codacy.com/manual/svaberg/imageslurper?utm_source=github.com&utm_medium=referral&utm_content=svaberg/imageslurper&utm_campaign=Badge_Coverage)
 [![Codacy Grade](https://api.codacy.com/project/badge/Grade/35f5ec8befa64a48b299c8871e004f1e)](https://www.codacy.com/manual/svaberg/imageslurper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=svaberg/imageslurper&amp;utm_campaign=Badge_Grade)
